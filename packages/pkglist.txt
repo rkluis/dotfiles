@@ -117,3 +117,4 @@ zathura
 zip
 zoxide
 zram-generator
+Test
