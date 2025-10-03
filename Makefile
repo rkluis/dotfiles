@@ -4,14 +4,16 @@ BIN_DIR := /usr/local/bin
 SCRIPT := qute
 PKGM := pkgm
 PKGLIST := packages/pkglist.txt
+FISH_SRC := fish
+FISH_DEST := $(HOME)/.config/fish
 
-.PHONY: all install install-scripts install-packages install-yay
+.PHONY: all install install-scripts install-packages install-yay install-fish
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts
+install: install-yay install-packages install-scripts install-fish
 
 # --------------------------
 # Install yay if not present
@@ -45,4 +47,12 @@ install-scripts:
 	@sudo cp scripts/$(PKGM) $(BIN_DIR)/$(PKGM)
 	@sudo chmod +x $(BIN_DIR)/$(PKGM)
 	@echo "Installed $(PKGM) to $(BIN_DIR)"
+
+# --------------------------
+# Install fish config
+install-fish:
+	@echo "Installing Fish config to $(FISH_DEST)..."
+	@mkdir -p $(FISH_DEST)
+	@cp -r $(FISH_SRC)/* $(FISH_DEST)/
+	@echo "Fish config installed"
 
