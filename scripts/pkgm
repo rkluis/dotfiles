@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# pkgm: helper to update pkglist.txt and push to git
+# Usage:
+#   pkgm -S package_name
+#   pkgm -R package_name
+
+set -e
+
+REPO_DIR="$HOME/dotfiles"
+PKGLIST="$REPO_DIR/packages/pkglist.txt"
+ACTION=$1
+shift
+PKGS="$@"
+
+if [ -z "$ACTION" ] || [ -z "$PKGS" ]; then
+    echo "Usage: $0 -S|-R package_name..."
+    exit 1
+fi
+
+# Always pull latest first
+git -C "$REPO_DIR" pull origin main
+
+case "$ACTION" in
+    -S)
+        for pkg in $PKGS; do
+            grep -qx "$pkg" "$PKGLIST" || echo "$pkg" >> "$PKGLIST"
+        done
+        ;;
+    -R)
+        for pkg in $PKGS; do
+            sed -i "/^$pkg$/d" "$PKGLIST"
+        done
+        ;;
+    *)
+        echo "Unknown action: $ACTION"
+        exit 1
+        ;;
+esac
+
+# Commit and push
+git -C "$REPO_DIR" add "$PKGLIST"
+git -C "$REPO_DIR" commit -m "$ACTION $PKGS"
+git -C "$REPO_DIR" push origin main
+

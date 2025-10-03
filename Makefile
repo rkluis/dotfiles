@@ -2,6 +2,7 @@
 # Configuration
 BIN_DIR := /usr/local/bin
 SCRIPT := qute
+PKGM := pkgm
 PKGLIST := packages/pkglist.txt
 
 .PHONY: all install install-scripts install-packages install-yay
@@ -34,12 +35,14 @@ install-packages: install-yay
 	fi
 
 # --------------------------
-# Install only qute.sh script
+# Install scripts (qute + pkgm)
 install-scripts:
-	@echo "Installing $(SCRIPT)..."
+	@echo "Installing scripts to $(BIN_DIR)..."
 	@mkdir -p $(BIN_DIR)
 	@sudo cp scripts/$(SCRIPT).sh $(BIN_DIR)/$(SCRIPT)
 	@sudo chmod +x $(BIN_DIR)/$(SCRIPT)
 	@echo "Installed $(SCRIPT) to $(BIN_DIR)"
-
+	@sudo cp scripts/$(PKGM) $(BIN_DIR)/$(PKGM)
+	@sudo chmod +x $(BIN_DIR)/$(PKGM)
+	@echo "Installed $(PKGM) to $(BIN_DIR)"
 
