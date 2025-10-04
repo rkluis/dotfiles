@@ -8,6 +8,8 @@ FISH_SRC := fish
 FISH_DEST := $(HOME)/.config/fish
 FOOT_SRC := foot
 FOOT_DEST := $(HOME)/.config/foot
+QUTE_SRC := qutebrowser
+QUTE_DEST := $(HOME)/.config/qutebrowser
 STARSHIP_SRC := starship/starship.toml
 STARSHIP_DEST := $(HOME)/.config/starship.toml
 DOOM_SRC := doom
@@ -16,13 +18,13 @@ DOOM_REPO := https://github.com/doomemacs/doomemacs.git
 DOOM_INSTALL_SCRIPT := $(HOME)/.emacs.d/bin/doom
 DOOM_FLAG := $(HOME)/.doom-installed
 
-.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom
+.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom
+install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom install-qutebrowser
 
 # --------------------------
 # Install yay if not present
@@ -72,6 +74,14 @@ install-foot:
 	@mkdir -p $(FOOT_DEST)
 	@cp -r $(FOOT_SRC)/* $(FOOT_DEST)/
 	@echo "Foot config installed"
+
+# --------------------------
+# Install qutebrowser config
+install-qutebrowser:
+	@echo "Installing qutebrowser config to $(QUTE_DEST)..."
+	@mkdir -p $(QUTE_DEST)
+	@cp -r $(QUTE_SRC)/* $(QUTE_DEST)/
+	@echo "qutebrowser config installed"
 
 # --------------------------
 # Install starship config
