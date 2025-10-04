@@ -8,14 +8,16 @@ FISH_SRC := fish
 FISH_DEST := $(HOME)/.config/fish
 FOOT_SRC := foot
 FOOT_DEST := $(HOME)/.config/foot
+STARSHIP_SRC := starship/starship.toml
+STARSHIP_DEST := $(HOME)/.config/starship.toml
 
-.PHONY: all install install-scripts install-packages install-yay install-fish install-foot
+.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts install-fish install-foot
+install: install-yay install-packages install-scripts install-fish install-foot install-starship
 
 # --------------------------
 # Install yay if not present
@@ -65,3 +67,10 @@ install-foot:
 	@mkdir -p $(FOOT_DEST)
 	@cp -r $(FOOT_SRC)/* $(FOOT_DEST)/
 	@echo "Foot config installed"
+
+# --------------------------
+# Install starship config
+install-starship:
+	@echo "Installing starship config to $(STARSHIP_DEST)..."
+	@cp  $(STARSHIP_SRC) $(STARSHIP_DEST)
+	@echo "starship config installed"
