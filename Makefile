@@ -10,14 +10,19 @@ FOOT_SRC := foot
 FOOT_DEST := $(HOME)/.config/foot
 STARSHIP_SRC := starship/starship.toml
 STARSHIP_DEST := $(HOME)/.config/starship.toml
+DOOM_SRC := doom
+DOOM_DEST := $(HOME)/.config/doom
+DOOM_REPO := https://github.com/doomemacs/doomemacs.git
+DOOM_INSTALL_SCRIPT := $(HOME)/.emacs.d/bin/doom
+DOOM_FLAG := $(HOME)/.doom-installed
 
-.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship
+.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts install-fish install-foot install-starship
+install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom
 
 # --------------------------
 # Install yay if not present
@@ -59,7 +64,7 @@ install-fish:
 	@mkdir -p $(FISH_DEST)
 	@cp -r $(FISH_SRC)/* $(FISH_DEST)/
 	@echo "Fish config installed"
-	
+
 # --------------------------
 # Install foot config
 install-foot:
@@ -74,3 +79,24 @@ install-starship:
 	@echo "Installing starship config to $(STARSHIP_DEST)..."
 	@cp  $(STARSHIP_SRC) $(STARSHIP_DEST)
 	@echo "starship config installed"
+
+# --------------------------
+# Install Doom Emacs
+install-doom:
+	@if [ ! -d "$(HOME)/.emacs.d" ]; then \
+		echo "Cloning Doom Emacs..."; \
+		git clone --depth 1 $(DOOM_REPO) $(HOME)/.emacs.d; \
+	else \
+		echo "Doom Emacs already cloned"; \
+	fi
+	@echo "Copying Doom config..."; \
+	mkdir -p $(DOOM_DEST); \
+	cp -r $(DOOM_SRC)/* $(DOOM_DEST)/
+	@if [ ! -f "$(DOOM_FLAG)" ]; then \
+		echo "Running 'doom install'..."; \
+		$(DOOM_INSTALL_SCRIPT) install; \
+		touch $(DOOM_FLAG); \
+	else \
+		echo "Doom already installed, running 'doom sync'..."; \
+		$(DOOM_INSTALL_SCRIPT) sync; \
+	fi
