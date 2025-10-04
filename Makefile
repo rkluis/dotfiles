@@ -6,14 +6,16 @@ PKGM := pkgm
 PKGLIST := packages/pkglist.txt
 FISH_SRC := fish
 FISH_DEST := $(HOME)/.config/fish
+FOOT_SRC := foot
+FOOT_DEST := $(HOME)/.config/foot
 
-.PHONY: all install install-scripts install-packages install-yay install-fish
+.PHONY: all install install-scripts install-packages install-yay install-fish install-foot
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts install-fish
+install: install-yay install-packages install-scripts install-fish install-foot
 
 # --------------------------
 # Install yay if not present
@@ -55,4 +57,11 @@ install-fish:
 	@mkdir -p $(FISH_DEST)
 	@cp -r $(FISH_SRC)/* $(FISH_DEST)/
 	@echo "Fish config installed"
-
+	
+# --------------------------
+# Install foot config
+install-foot:
+	@echo "Installing Foot config to $(FOOT_DEST)..."
+	@mkdir -p $(FOOT_DEST)
+	@cp -r $(FOOT_SRC)/* $(FOOT_DEST)/
+	@echo "Foot config installed"
