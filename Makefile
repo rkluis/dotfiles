@@ -12,19 +12,23 @@ QUTE_SRC := qutebrowser
 QUTE_DEST := $(HOME)/.config/qutebrowser
 STARSHIP_SRC := starship/starship.toml
 STARSHIP_DEST := $(HOME)/.config/starship.toml
+BASHRC_SRC := bash/.bashrc
+BASHRC_DEST := $(HOME)/.bashrc
+BASHSCRIPT_SRC := bash/custom-bash-options.sh
+BASHSCRIPT_DEST := /etc/profile.d/custom-bash-options.sh
 DOOM_SRC := doom
 DOOM_DEST := $(HOME)/.config/doom
 DOOM_REPO := https://github.com/doomemacs/doomemacs.git
 DOOM_INSTALL_SCRIPT := $(HOME)/.emacs.d/bin/doom
 DOOM_FLAG := $(HOME)/.doom-installed
 
-.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser
+.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom install-qutebrowser
+install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom install-qutebrowser install-bash
 
 # --------------------------
 # Install yay if not present
@@ -74,6 +78,16 @@ install-foot:
 	@mkdir -p $(FOOT_DEST)
 	@cp -r $(FOOT_SRC)/* $(FOOT_DEST)/
 	@echo "Foot config installed"
+
+# --------------------------
+# Install bash config
+install-bash:
+	@echo "Copy .bashrc to $(BASHRC_DEST)..."
+	@cp -r $(BASHRC_SRC) $(BASHRC_DEST)
+	@echo "BASHRC config copied"
+	@echo "Copy custom-bash-options.sh to $(BASHSCRIPT_DEST)..."
+	@cp -r $(BASHSCRIPT_SRC) $(BASHSCRIPT_DEST)
+	@echo "BASH script copied"
 
 # --------------------------
 # Install qutebrowser config
