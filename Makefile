@@ -21,14 +21,16 @@ DOOM_DEST := $(HOME)/.config/doom
 DOOM_REPO := https://github.com/doomemacs/doomemacs.git
 DOOM_INSTALL_SCRIPT := $(HOME)/.emacs.d/bin/doom
 DOOM_FLAG := $(HOME)/.doom-installed
+NVIM_SRC = nvim
+NVIM_DEST = ~/.config/nvim
 
-.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash
+.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom install-qutebrowser install-bash
+install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim
 
 # --------------------------
 # Install yay if not present
@@ -88,6 +90,18 @@ install-bash:
 	@echo "Copy custom-bash-options.sh to $(BASHSCRIPT_DEST)..."
 	@cp -r $(BASHSCRIPT_SRC) $(BASHSCRIPT_DEST)
 	@echo "BASH script copied"
+
+
+# --------------------------
+# Install nvim config
+install-nvim:
+	@echo "Copy nvim config to $(NVIM_DEST)..."
+	@cp -r $(NVIM_SRC)/* $(NVIM_DEST)/
+	@echo "nvim config copied"
+	@echo "sync Lazy"
+	nvim --headless "+Lazy! sync" +qa
+	@echo "Completed with syncing Lazy"
+
 
 # --------------------------
 # Install qutebrowser config
