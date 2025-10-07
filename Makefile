@@ -23,14 +23,20 @@ DOOM_INSTALL_SCRIPT := $(HOME)/.emacs.d/bin/doom
 DOOM_FLAG := $(HOME)/.doom-installed
 NVIM_SRC = nvim
 NVIM_DEST = ~/.config/nvim
+TMUX_SRC = tmux
+TMUX_CONF = $(TMUX_SRC)/.tmux.conf
+TMUX_LAYOUTS = $(TMUX_SRC)/layouts
+TMUX_DEST_CONF = $(HOME)/.tmux.conf
+TMUX_DEST_TPM = $(HOME)/.tmux/plugins/tpm
+TMUX_DEST_LAYOUTS = $(HOME)/.tmux/plugins/tmuxifier/layouts
 
-.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim
+.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim
+install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux
 
 # --------------------------
 # Install yay if not present
@@ -102,6 +108,41 @@ install-nvim:
 	nvim --headless "+Lazy! sync" +qa
 	@echo "Completed with syncing Lazy"
 
+# --------------------------
+# Install tmux config
+install-tmux:
+	@echo "Installing tmux config..."
+	@cp $(TMUX_CONF) $(TMUX_DEST_CONF)
+
+	@if [ ! -d "$(TMUX_DEST_TPM)" ]; then \
+		echo "Cloning TPM..."; \
+		git clone https://github.com/tmux-plugins/tpm $(TMUX_DEST_TPM); \
+	else \
+		echo "TPM already installed"; \
+	fi
+
+	@echo "Copying tmuxifier layouts..."
+	@mkdir -p $(TMUX_DEST_LAYOUTS)
+	@cp -r $(TMUX_LAYOUTS)/* $(TMUX_DEST_LAYOUTS)/
+
+	@echo "Installing tmux plugins via TPM..."
+	@tmux start-server; \
+	 if ! tmux has-session -t tmp_install 2>/dev/null; then \
+	   tmux new-session -d -s tmp_install "exit"; \
+	 fi; \
+	 $(TMUX_DEST_TPM)/bin/install_plugins; \
+	 tmux kill-session -t tmp_install 2>/dev/null || true
+
+	@echo "Ensuring 'home' session exists..."
+	@tmux start-server; \
+	 if tmux has-session -t home 2>/dev/null; then \
+	   echo "Session 'home' already exists, skipping."; \
+	 else \
+	   echo "Creating session 'home'..."; \
+	   tmuxifier load-session home; \
+	 fi
+
+	@echo "tmux setup complete!"
 
 # --------------------------
 # Install qutebrowser config
