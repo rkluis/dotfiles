@@ -119,3 +119,4 @@ zoxide
 zram-generator
 reflector
 gitleaks
+linux-zen-headers
