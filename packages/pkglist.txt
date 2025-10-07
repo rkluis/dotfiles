@@ -118,3 +118,4 @@ zip
 zoxide
 zram-generator
 reflector
+gitleaks
