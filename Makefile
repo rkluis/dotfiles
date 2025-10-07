@@ -1,8 +1,10 @@
 # --------------------------
 # Configuration
 BIN_DIR := /usr/local/bin
-SCRIPT := qute
+QUTE := qute
 PKGM := pkgm
+SCRIPTS_SRC := scripts
+SCRIPTS_DEST := $(HOME)/scripts
 PKGLIST := packages/pkglist.txt
 FISH_SRC := fish
 FISH_DEST := $(HOME)/.config/fish
@@ -30,13 +32,13 @@ TMUX_DEST_CONF = $(HOME)/.tmux.conf
 TMUX_DEST_TPM = $(HOME)/.tmux/plugins/tpm
 TMUX_DEST_LAYOUTS = $(HOME)/.tmux/plugins/tmuxifier/layouts
 
-.PHONY: all install install-scripts install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux
+.PHONY: all install install-wrapper install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts
 
 # --------------------------
 # Default target
 all: install
 
-install: install-yay install-packages install-scripts install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux
+install: install-yay install-packages install-wrapper install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts
 
 # --------------------------
 # Install yay if not present
@@ -60,16 +62,25 @@ install-packages: install-yay
 	fi
 
 # --------------------------
-# Install scripts (qute + pkgm)
-install-scripts:
-	@echo "Installing scripts to $(BIN_DIR)..."
+# Install wrapper  (qute + pkgm)
+install-wrapper:
+	@echo "Installing wrapper to $(BIN_DIR)..."
 	@mkdir -p $(BIN_DIR)
-	@sudo cp scripts/$(SCRIPT).sh $(BIN_DIR)/$(SCRIPT)
-	@sudo chmod +x $(BIN_DIR)/$(SCRIPT)
-	@echo "Installed $(SCRIPT) to $(BIN_DIR)"
-	@sudo cp scripts/$(PKGM) $(BIN_DIR)/$(PKGM)
+	@sudo cp wrappers/$(QUTE).sh $(BIN_DIR)/$(QUTE)
+	@sudo chmod +x $(BIN_DIR)/$(QUTE)
+	@echo "Installed $(QUTE) to $(BIN_DIR)"
+	@sudo cp wrappers/$(PKGM) $(BIN_DIR)/$(PKGM)
 	@sudo chmod +x $(BIN_DIR)/$(PKGM)
 	@echo "Installed $(PKGM) to $(BIN_DIR)"
+
+# --------------------------
+# Copy scripts
+install-scripts:
+	@echo "Copy scripts to $(SCRIPTS_DEST)/*..."
+	@mkdir -p $(SCRIPTS_DEST)
+	@sudo cp -r $(SCRIPTS_SRC)/* $(SCRIPTS_DEST)/
+	@sudo chmod +x $(SCRIPTS_DEST)/*
+	@echo "Copied scripts to $(SCRIPTS_DEST)/*"
 
 # --------------------------
 # Install fish config
