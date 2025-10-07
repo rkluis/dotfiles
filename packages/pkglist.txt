@@ -120,3 +120,10 @@ zram-generator
 reflector
 gitleaks
 linux-zen-headers
+qemu-desktop
+libvirt
+virt-install
+virt-viewer
+edk2-ovmf
+dnsmasq
+bridge-utils
