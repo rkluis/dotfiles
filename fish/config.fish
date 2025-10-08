@@ -24,7 +24,7 @@ if status is-interactive
 
     # Android SDK
     set -gx ANDROID_HOME $HOME/Android/Sdk
-    set -gx EDITOR nvim
+    set -Ux EDITOR nvim
     set -gx PATH $ANDROID_HOME/platform-tools $PATH
     set -gx PATH $ANDROID_HOME/emulator $PATH
     set -gx PATH $ANDROID_HOME/cmdline-tools/latest/bin $PATH
