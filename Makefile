@@ -165,7 +165,7 @@ install-tmux:
 	   echo "Session 'home' already exists, skipping."; \
 	 else \
 	   echo "Creating session 'home'..."; \
-	   sudo tmuxifier load-session home; \
+	   sudo /home/rolly/.tmux/plugins/tmuxifier/bin/tmuxifier load-session home; \
 	 fi
 
 	@echo "tmux setup complete!"
