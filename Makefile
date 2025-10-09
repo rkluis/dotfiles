@@ -127,6 +127,7 @@ install-bash:
 # Install nvim config
 install-nvim:
 	@echo "Copy nvim config to $(NVIM_DEST)..."
+	@sudo mkdir -p $(NVIM_DEST)
 	@cp -r $(NVIM_SRC)/* $(NVIM_DEST)/
 	@echo "nvim config copied"
 	@echo "sync Lazy"
