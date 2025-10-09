@@ -7,6 +7,7 @@ curl -fsSL https://raw.githubusercontent.com/rkluis/dotfiles/main/install.sh | b
 Requirements:
 - Arch
 - User named rolly added to sudo (will change the hardcoded dependency on username)
+- working internet/dns
 
 Components:
 - Custom dwl
