@@ -113,10 +113,11 @@ install-foot:
 # Install bash config
 install-bash:
 	@echo "Copy .bashrc to $(BASHRC_DEST)..."
-	@cp -r $(BASHRC_SRC) $(BASHRC_DEST)
+	@sudo cp -r $(BASHRC_SRC) $(BASHRC_DEST)
 	@echo "BASHRC config copied"
 	@echo "Copy custom-bash-options.sh to $(BASHSCRIPT_DEST)..."
-	@cp -r $(BASHSCRIPT_SRC) $(BASHSCRIPT_DEST)
+	@sudo cp -r $(BASHSCRIPT_SRC) $(BASHSCRIPT_DEST)
+	@sudo chmod +x $(BASHSCRIPT_DEST)
 	@echo "BASH script copied"
 	@echo "Copy .bash_profile to $(BASHPROFILE_DEST)..."
 	@cp -r $(BASHPROFILE_SRC) $(BASHPROFILE_DEST)
@@ -152,10 +153,10 @@ install-tmux:
 	@echo "Installing tmux plugins via TPM..."
 	@tmux start-server; \
 	 if ! tmux has-session -t tmp_install 2>/dev/null; then \
-	   tmux new-session -d -s tmp_install "exit"; \
+	   sudo tmux new-session -d -s tmp_install "exit"; \
 	 fi; \
 	 $(TMUX_DEST_TPM)/bin/install_plugins; \
-	 tmux kill-session -t tmp_install 2>/dev/null || true
+	 sudo tmux kill-session -t tmp_install 2>/dev/null || true
 
 	@echo "Ensuring 'home' session exists..."
 	@tmux start-server; \
@@ -163,7 +164,7 @@ install-tmux:
 	   echo "Session 'home' already exists, skipping."; \
 	 else \
 	   echo "Creating session 'home'..."; \
-	   tmuxifier load-session home; \
+	   sudo tmuxifier load-session home; \
 	 fi
 
 	@echo "tmux setup complete!"
