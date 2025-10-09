@@ -147,10 +147,6 @@ install-tmux:
 		echo "TPM already installed"; \
 	fi
 
-	@echo "Copying tmuxifier layouts..."
-	@mkdir -p $(TMUX_DEST_LAYOUTS)
-	@cp -r $(TMUX_LAYOUTS)/* $(TMUX_DEST_LAYOUTS)/
-
 	@echo "Installing tmux plugins via TPM..."
 	@tmux start-server; \
 	 if ! tmux has-session -t tmp_install 2>/dev/null; then \
@@ -159,13 +155,17 @@ install-tmux:
 	 $(TMUX_DEST_TPM)/bin/install_plugins; \
 	 sudo tmux kill-session -t tmp_install 2>/dev/null || true
 
+	@echo "Copying tmuxifier layouts..."
+	@mkdir -p $(TMUX_DEST_LAYOUTS)
+	@cp -r $(TMUX_LAYOUTS)/* $(TMUX_DEST_LAYOUTS)/
+
 	@echo "Ensuring 'home' session exists..."
 	@tmux start-server; \
 	 if tmux has-session -t home 2>/dev/null; then \
 	   echo "Session 'home' already exists, skipping."; \
 	 else \
 	   echo "Creating session 'home'..."; \
-	   sudo /home/rolly/.tmux/plugins/tmuxifier/bin/tmuxifier load-session home; \
+	   sudo $(HOME)/.tmux/plugins/tmuxifier/bin/tmuxifier load-session home; \
 	 fi
 
 	@echo "tmux setup complete!"
