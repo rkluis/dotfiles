@@ -159,15 +159,6 @@ install-tmux:
 	@mkdir -p $(TMUX_DEST_LAYOUTS)
 	@cp -r $(TMUX_LAYOUTS)/* $(TMUX_DEST_LAYOUTS)/
 
-	@echo "Ensuring 'home' session exists..."
-	@tmux start-server; \
-	 if tmux has-session -t home 2>/dev/null; then \
-	   echo "Session 'home' already exists, skipping."; \
-	 else \
-	   echo "Creating session 'home'..."; \
-	   sudo $(HOME)/.tmux/plugins/tmuxifier/bin/tmuxifier load-session home; \
-	 fi
-
 	@echo "tmux setup complete!"
 
 # --------------------------
