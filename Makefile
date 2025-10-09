@@ -1,38 +1,41 @@
 # --------------------------
 # Configuration
-BIN_DIR := /usr/local/bin
-QUTE := qute
-PKGM := pkgm
-SCRIPTS_SRC := scripts
-SCRIPTS_DEST := $(HOME)/scripts
-PKGLIST := packages/pkglist.txt
-FISH_SRC := fish
-FISH_DEST := $(HOME)/.config/fish
-FOOT_SRC := foot
-FOOT_DEST := $(HOME)/.config/foot
-QUTE_SRC := qutebrowser
-QUTE_DEST := $(HOME)/.config/qutebrowser
-STARSHIP_SRC := starship/starship.toml
-STARSHIP_DEST := $(HOME)/.config/starship.toml
-BASHRC_SRC := bash/.bashrc
+AUTOLOGIN_SRC := systemd/override.conf
+AUTOLOGIN_DEST := /etc/systemd/system/getty@tty1.service.d/override.conf
+BASHPROFILE_DEST := $(HOME)/.bash_profile
+BASHPROFILE_SRC := bash/.bash_profile
 BASHRC_DEST := $(HOME)/.bashrc
-BASHSCRIPT_SRC := bash/custom-bash-options.sh
+BASHRC_SRC := bash/.bashrc
 BASHSCRIPT_DEST := /etc/profile.d/custom-bash-options.sh
-DOOM_SRC := doom
+BASHSCRIPT_SRC := bash/custom-bash-options.sh
+BIN_DIR := /usr/local/bin
 DOOM_DEST := $(HOME)/.config/doom
-DOOM_REPO := https://github.com/doomemacs/doomemacs.git
-DOOM_INSTALL_SCRIPT := $(HOME)/.emacs.d/bin/doom
 DOOM_FLAG := $(HOME)/.doom-installed
-NVIM_SRC = nvim
+DOOM_INSTALL_SCRIPT := $(HOME)/.emacs.d/bin/doom
+DOOM_REPO := https://github.com/doomemacs/doomemacs.git
+DOOM_SRC := doom
+FISH_DEST := $(HOME)/.config/fish
+FISH_SRC := fish
+FOOT_DEST := $(HOME)/.config/foot
+FOOT_SRC := foot
 NVIM_DEST = ~/.config/nvim
-TMUX_SRC = tmux
+NVIM_SRC = nvim
+PKGLIST := packages/pkglist.txt
+PKGM := pkgm
+QUTE_DEST := $(HOME)/.config/qutebrowser
+QUTE := qute
+QUTE_SRC := qutebrowser
+SCRIPTS_DEST := $(HOME)/scripts
+SCRIPTS_SRC := scripts
+STARSHIP_DEST := $(HOME)/.config/starship.toml
+STARSHIP_SRC := starship/starship.toml
 TMUX_CONF = $(TMUX_SRC)/.tmux.conf
-TMUX_LAYOUTS = $(TMUX_SRC)/layouts
 TMUX_DEST_CONF = $(HOME)/.tmux.conf
-TMUX_DEST_TPM = $(HOME)/.tmux/plugins/tpm
 TMUX_DEST_LAYOUTS = $(HOME)/.tmux/plugins/tmuxifier/layouts
-
-.PHONY: all install install-wrapper install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts
+TMUX_DEST_TPM = $(HOME)/.tmux/plugins/tpm
+TMUX_LAYOUTS = $(TMUX_SRC)/layouts
+TMUX_SRC = tmux
+.PHONY: all install install-wrapper install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts install-autologin
 
 # --------------------------
 # Default target
@@ -50,6 +53,14 @@ install-yay:
 		cd /tmp/yay && makepkg -si --noconfirm --needed; \
 		cd - && rm -rf /tmp/yay; \
 	} || echo "yay already installed"
+
+# --------------------------
+# Install systemd autologin override
+install-autologin:
+	@echo "Installing systemd autologin override for tty1..."
+	@sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
+	@sudo cp $(AUTOLOGIN_SRC) $(AUTOLOGIN_DEST)
+	@echo "Autologin override installed to $(AUTOLOGIN_DEST)"
 
 # --------------------------
 # Install packages from exported list
@@ -107,7 +118,9 @@ install-bash:
 	@echo "Copy custom-bash-options.sh to $(BASHSCRIPT_DEST)..."
 	@cp -r $(BASHSCRIPT_SRC) $(BASHSCRIPT_DEST)
 	@echo "BASH script copied"
-
+	@echo "Copy .bash_profile to $(BASHPROFILE_DEST)..."
+	@cp -r $(BASHPROFILE_SRC) $(BASHPROFILE_DEST)
+	@echo ".bash_profile config copied"
 
 # --------------------------
 # Install nvim config
