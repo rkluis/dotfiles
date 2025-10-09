@@ -23,11 +23,8 @@ done
 # 3. Run dotfiles Makefile
 echo "⚙️ Installing dotfiles..."
 cd ~/dotfiles
-set +e
 make install
-ec=$?
-echo "➡️ dotfiles make install exited with code: $ec"
-set -e
+
 # 4. Build and install dwlmsg
 echo "⚙️ Building + installing dwlmsg..."
 cd ~/dwlmsg
