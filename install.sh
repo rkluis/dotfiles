@@ -50,5 +50,6 @@ sudo make install
 echo "🔁 Reloading systemd daemon..."
 sudo systemctl daemon-reexec
 
-echo "✅ Setup complete. Reboot to start dwl automatically on tty1."
+echo "✅ Setup complete. Starting dwl automatically on tty1..."
+sudo systemctl restart getty@tty1
 
