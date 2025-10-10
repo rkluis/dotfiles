@@ -41,7 +41,7 @@ TMUX_SRC = tmux
 # Default target
 all: install
 
-install: install-starship
+install: install-yay install-starship
 
 #install: install-yay install-packages install-wrapper install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts  #install-autologin
 # --------------------------
