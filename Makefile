@@ -192,10 +192,10 @@ install-doom:
 	cp -r $(DOOM_SRC)/* $(DOOM_DEST)/
 	@if [ ! -f "$(DOOM_FLAG)" ]; then \
 		echo "Running 'doom install'..."; \
-		$(DOOM_INSTALL_SCRIPT) install; \
+		#$(DOOM_INSTALL_SCRIPT) install; \
 		#$(DOOM_INSTALL_SCRIPT) sync; \
 		touch $(DOOM_FLAG); \
 	else \
 		echo "Doom already installed, running 'doom sync'..."; \
-		$(DOOM_INSTALL_SCRIPT) sync; \
+		#$(DOOM_INSTALL_SCRIPT) sync; \
 	fi
