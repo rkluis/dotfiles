@@ -191,11 +191,11 @@ install-doom:
 	mkdir -p $(DOOM_DEST); \
 	cp -r $(DOOM_SRC)/* $(DOOM_DEST)/
 	@if [ ! -f "$(DOOM_FLAG)" ]; then \
-		echo "Running 'doom install'..."; \
-		$(DOOM_INSTALL_SCRIPT) install --force; \
-		$(DOOM_INSTALL_SCRIPT) sync --force; \
+		echo "Running 'doom install' in background... (logging to /tmp/doom.log)"; \
+		nohup sh -c "$(DOOM_INSTALL_SCRIPT) install --force && $(DOOM_INSTALL_SCRIPT) sync --force" > /tmp/doom.log 2>&1 & \
 		touch $(DOOM_FLAG); \
 	else \
 		echo "Doom already installed, running 'doom sync'..."; \
-		$(DOOM_INSTALL_SCRIPT) sync --force; \
+		nohup sh -c "$(DOOM_INSTALL_SCRIPT) sync --force" > /tmp/doom.log 2>&1 & \
 	fi
+
