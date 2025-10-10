@@ -41,7 +41,7 @@ TMUX_SRC = tmux
 # Default target
 all: install
 
-install: install-packages install-wrapper install-fish install-foot install-starship install-qutebrowser install-bash install-nvim install-tmux install-scripts install-autologin
+install: install-packages install-wrapper install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts install-autologin
 
 #issues: install-doom
 #install: install-yay install-packages install-wrapper install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts  #install-autologin
@@ -193,7 +193,7 @@ install-doom:
 	@if [ ! -f "$(DOOM_FLAG)" ]; then \
 		echo "Running 'doom install'..."; \
 		$(DOOM_INSTALL_SCRIPT) install; \
-		$(DOOM_INSTALL_SCRIPT) sync; \
+		#$(DOOM_INSTALL_SCRIPT) sync; \
 		touch $(DOOM_FLAG); \
 	else \
 		echo "Doom already installed, running 'doom sync'..."; \
