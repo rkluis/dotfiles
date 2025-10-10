@@ -41,7 +41,7 @@ TMUX_SRC = tmux
 # Default target
 all: install
 
-install: install-packages install-wrapper install-fish install-foot install-starship install-qutebrowser install-bash install-nvim install-tmux
+install: install-packages install-wrapper install-fish install-foot install-starship install-qutebrowser install-bash install-nvim install-tmux install-scripts
 
 #issues: install-doom
 #install: install-yay install-packages install-wrapper install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts  #install-autologin
