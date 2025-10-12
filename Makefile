@@ -35,16 +35,16 @@ TMUX_DEST_LAYOUTS = $(HOME)/.tmux/plugins/tmuxifier/layouts
 TMUX_DEST_TPM = $(HOME)/.tmux/plugins/tpm
 TMUX_LAYOUTS = $(TMUX_SRC)/layouts
 TMUX_SRC = tmux
-.PHONY: all install install-wrapper install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts install-autologin
+WALLPAPERS_DEST := $(HOME)/wallpapers
+WALLPAPERS_SRC := wallpapers
+.PHONY: all install install-wrapper install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts install-autologin install-wallpapers
 
 # --------------------------
 # Default target
 all: install
 
-install: install-packages install-wrapper install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts install-autologin
+install: install-packages install-wrapper install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts install-autologin install-wallpapers
 
-#issues: install-doom
-#install: install-yay install-packages install-wrapper install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts  #install-autologin
 # --------------------------
 # Install yay if not present
 install-yay:
@@ -63,6 +63,14 @@ install-autologin:
 	@sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
 	@sudo cp $(AUTOLOGIN_SRC) $(AUTOLOGIN_DEST)
 	@echo "Autologin override installed to $(AUTOLOGIN_DEST)"
+
+# --------------------------
+# Copy wallpapers
+install-wallpapers:
+	@echo "Starting copy Wallpapers"
+	@mkdir -p $(WALLPAPERS_DEST)
+	@cp -r $(WALLPAPERS_SRC)/* $(WALLPAPERS_DEST)/
+	@echo "Copied all wallpapers to $(WALLPAPERS_DEST)"
 
 # --------------------------
 # Install packages from exported list

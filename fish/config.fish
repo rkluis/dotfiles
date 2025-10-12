@@ -13,6 +13,7 @@ if status is-interactive
         set -x LIBVA_DRIVER_NAME iHD
     end
 
+    set -x BROWSER qute
     set -x DOOMDIR $HOME/.config/doom
     set -gx CHROME_EXECUTABLE /usr/local/bin/chromium-wayland
 
