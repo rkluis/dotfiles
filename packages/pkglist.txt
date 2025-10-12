@@ -128,3 +128,4 @@ edk2-ovmf
 dnsmasq
 bridge-utils
 localsend-bin
+tea
