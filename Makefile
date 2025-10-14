@@ -1,42 +1,12 @@
 # --------------------------
 # Configuration
-AUTOLOGIN_SRC := systemd/override.conf
-AUTOLOGIN_DEST := /etc/systemd/system/getty@tty1.service.d/override.conf
-BASHPROFILE_DEST := $(HOME)/.bash_profile
-BASHPROFILE_SRC := bash/.bash_profile
-BASHRC_DEST := $(HOME)/.bashrc
-BASHRC_SRC := bash/.bashrc
-BASHSCRIPT_DEST := /etc/profile.d/custom-bash-options.sh
-BASHSCRIPT_SRC := bash/custom-bash-options.sh
 BIN_DIR := /usr/local/bin
-DOOM_DEST := $(HOME)/.config/doom
 DOOM_FLAG := $(HOME)/.doom-installed
 DOOM_INSTALL_SCRIPT := $(HOME)/.emacs.d/bin/doom
 DOOM_REPO := https://github.com/doomemacs/doomemacs.git
-DOOM_SRC := doom
-FISH_DEST := $(HOME)/.config/fish
-FISH_SRC := fish
-FOOT_DEST := $(HOME)/.config/foot
-FOOT_SRC := foot
-NVIM_DEST = ~/.config/nvim
-NVIM_SRC = nvim
+DOTFILES_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 PKGLIST := packages/pkglist.txt
-PKGM := pkgm
-QUTE_DEST := $(HOME)/.config/qutebrowser
-QUTE := qute
-QUTE_SRC := qutebrowser
-SCRIPTS_DEST := $(HOME)/scripts
-SCRIPTS_SRC := scripts
-STARSHIP_DEST := $(HOME)/.config/starship.toml
-STARSHIP_SRC := starship/starship.toml
-TMUX_CONF = $(TMUX_SRC)/.tmux.conf
-TMUX_DEST_CONF = $(HOME)/.tmux.conf
-TMUX_DEST_LAYOUTS = $(HOME)/.tmux/plugins/tmuxifier/layouts
 TMUX_DEST_TPM = $(HOME)/.tmux/plugins/tpm
-TMUX_LAYOUTS = $(TMUX_SRC)/layouts
-TMUX_SRC = tmux
-WALLPAPERS_DEST := $(HOME)/wallpapers
-WALLPAPERS_SRC := wallpapers
 .PHONY: all install install-wrapper install-packages install-yay install-fish install-foot install-starship install-doom install-qutebrowser install-bash install-nvim install-tmux install-scripts install-autologin install-wallpapers
 
 # --------------------------
@@ -60,17 +30,16 @@ install-yay:
 # Install systemd autologin override
 install-autologin:
 	@echo "Installing systemd autologin override for tty1..."
-	@sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
-	@sudo cp $(AUTOLOGIN_SRC) $(AUTOLOGIN_DEST)
-	@echo "Autologin override installed to $(AUTOLOGIN_DEST)"
+	@cd $(DOTFILES_DIR) && sudo stow -t / sys-autologin
+	@echo "Autologin override stowed" 
+
 
 # --------------------------
 # Copy wallpapers
 install-wallpapers:
-	@echo "Starting copy Wallpapers"
-	@mkdir -p $(WALLPAPERS_DEST)
-	@cp -r $(WALLPAPERS_SRC)/* $(WALLPAPERS_DEST)/
-	@echo "Copied all wallpapers to $(WALLPAPERS_DEST)"
+	@echo "Starting stowing Wallpapers"
+	@cd $(DOTFILES_DIR) && stow -t ~ wallpapers
+	@echo "Stowed all wallpapers" 
 
 # --------------------------
 # Install packages from exported list
@@ -85,61 +54,45 @@ install-packages: install-yay
 # --------------------------
 # Install wrapper  (qute + pkgm)
 install-wrapper:
-	@echo "Installing wrapper to $(BIN_DIR)..."
-	@mkdir -p $(BIN_DIR)
-	@sudo cp wrappers/$(QUTE).sh $(BIN_DIR)/$(QUTE)
-	@sudo chmod +x $(BIN_DIR)/$(QUTE)
-	@echo "Installed $(QUTE) to $(BIN_DIR)"
-	@sudo cp wrappers/$(PKGM) $(BIN_DIR)/$(PKGM)
-	@sudo chmod +x $(BIN_DIR)/$(PKGM)
-	@echo "Installed $(PKGM) to $(BIN_DIR)"
+	@echo "Stowing wrapper for qutebrowser and packagelist updater"
+	@cd $(DOTFILES_DIR) && sudo stow -t / sys-wrappers
+	@echo "Stowed packages to usr/local/bin)"
 
 # --------------------------
 # Copy scripts
 install-scripts:
-	@echo "Copy scripts to $(SCRIPTS_DEST)/*..."
-	@mkdir -p $(SCRIPTS_DEST)
-	@sudo cp -r $(SCRIPTS_SRC)/* $(SCRIPTS_DEST)/
-	@sudo chmod +x $(SCRIPTS_DEST)/*
-	@echo "Copied scripts to $(SCRIPTS_DEST)/*"
+	@echo "Start stowing scripts"
+	@cd $(DOTFILES_DIR) && stow -t ~ scripts
+	@echo "Stowed scripts"
 
 # --------------------------
 # Install fish config
 install-fish:
-	@echo "Installing Fish config to $(FISH_DEST)..."
-	@mkdir -p $(FISH_DEST)
-	@cp -r $(FISH_SRC)/* $(FISH_DEST)/
-	@echo "Fish config installed"
+	@echo "Start stowing fish"
+	@cd $(DOTFILES_DIR) && stow -t ~ fish
+	@echo "Fish config stowed"
 
 # --------------------------
 # Install foot config
 install-foot:
-	@echo "Installing Foot config to $(FOOT_DEST)..."
-	@mkdir -p $(FOOT_DEST)
-	@cp -r $(FOOT_SRC)/* $(FOOT_DEST)/
-	@echo "Foot config installed"
+	@echo "Start stowing foot"
+	@cd $(DOTFILES_DIR) && stow -t ~ foot
+	@echo "foot config stowed"
 
 # --------------------------
 # Install bash config
 install-bash:
-	@echo "Copy .bashrc to $(BASHRC_DEST)..."
-	@sudo cp -r $(BASHRC_SRC) $(BASHRC_DEST)
-	@echo "BASHRC config copied"
-	@echo "Copy custom-bash-options.sh to $(BASHSCRIPT_DEST)..."
-	@sudo cp -r $(BASHSCRIPT_SRC) $(BASHSCRIPT_DEST)
-	@sudo chmod +x $(BASHSCRIPT_DEST)
-	@echo "BASH script copied"
-	@echo "Copy .bash_profile to $(BASHPROFILE_DEST)..."
-	@cp -r $(BASHPROFILE_SRC) $(BASHPROFILE_DEST)
-	@echo ".bash_profile config copied"
+	@echo "Start stowing bash"
+	@cd $(DOTFILES_DIR) && stow -t ~ bash
+	@cd $(DOTFILES_DIR) && sudo stow -t / sys-bash
+	@echo "bash config stowed"
 
 # --------------------------
 # Install nvim config
 install-nvim:
-	@echo "Copy nvim config to $(NVIM_DEST)..."
-	@mkdir -p $(NVIM_DEST)
-	@cp -r $(NVIM_SRC)/* $(NVIM_DEST)/
-	@echo "nvim config copied"
+	@echo "Start stowing nvim"
+	@cd $(DOTFILES_DIR) && stow -t ~ nvim
+	@echo "nvim config stowed"
 	@echo "sync Lazy"
 	nvim --headless "+Lazy! sync" +qa
 	@echo "Completed with syncing Lazy"
@@ -148,9 +101,10 @@ install-nvim:
 # Install tmux config
 install-tmux:
 	@echo "Installing tmux config..."
-	@cp $(TMUX_CONF) $(TMUX_DEST_CONF)
+	@cd $(DOTFILES_DIR) && stow -t ~ tmux
+	@cd $(DOTFILES_DIR) && stow -t ~ tmuxifier
 
-	@if [ ! -d "$(TMUX_DEST_TPM)" ]; then \
+	@if [ ! -d "$(TMUX_DEST_TPM)/.git" ]; then \
 		echo "Cloning TPM..."; \
 		git clone https://github.com/tmux-plugins/tpm $(TMUX_DEST_TPM); \
 	else \
@@ -165,26 +119,22 @@ install-tmux:
 	 $(TMUX_DEST_TPM)/bin/install_plugins; \
 	 sudo tmux kill-session -t tmp_install 2>/dev/null || true
 
-	@echo "Copying tmuxifier layouts..."
-	@mkdir -p $(TMUX_DEST_LAYOUTS)
-	@cp -r $(TMUX_LAYOUTS)/* $(TMUX_DEST_LAYOUTS)/
 
 	@echo "tmux setup complete!"
 
 # --------------------------
 # Install qutebrowser config
 install-qutebrowser:
-	@echo "Installing qutebrowser config to $(QUTE_DEST)..."
-	@mkdir -p $(QUTE_DEST)
-	@cp -r $(QUTE_SRC)/* $(QUTE_DEST)/
-	@echo "qutebrowser config installed"
+	@echo "Start stowing qutebrowser"
+	@cd $(DOTFILES_DIR) && stow -t ~ qutebrowser
+	@echo "qutebrowser config stowed"
 
 # --------------------------
 # Install starship config
 install-starship:
-	@echo "Installing starship config to $(STARSHIP_DEST)..."
-	@cp  $(STARSHIP_SRC) $(STARSHIP_DEST)
-	@echo "starship config installed"
+	@echo "Start stowing starship"
+	@cd $(DOTFILES_DIR) && stow -t ~ starship
+	@echo "starship config stowed"
 
 # --------------------------
 # Install Doom Emacs
@@ -195,9 +145,8 @@ install-doom:
 	else \
 		echo "Doom Emacs already cloned"; \
 	fi
-	@echo "Copying Doom config..."; \
-	mkdir -p $(DOOM_DEST); \
-	cp -r $(DOOM_SRC)/* $(DOOM_DEST)/
+	@echo "Stowing Doom config..."; 
+	@cd $(DOTFILES_DIR) && stow -t ~ doom
 	@if [ ! -f "$(DOOM_FLAG)" ]; then \
 		echo "Running 'doom install' in background... (logging to /tmp/doom.log)"; \
 		nohup sh -c "$(DOOM_INSTALL_SCRIPT) install --force && $(DOOM_INSTALL_SCRIPT) sync --force" > /tmp/doom.log 2>&1 & \
