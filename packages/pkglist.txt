@@ -128,3 +128,4 @@ dnsmasq
 bridge-utils
 localsend-bin
 tea
+gh-dash
