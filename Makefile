@@ -30,6 +30,7 @@ install-yay:
 # Install systemd autologin override
 install-autologin:
 	@echo "Installing systemd autologin override for tty1..."
+	@rm -rf /etc/systemd/system/getty@tty1.service.d/override.conf
 	@cd $(DOTFILES_DIR) && sudo stow -t / sys-autologin
 	@echo "Autologin override stowed" 
 
@@ -62,6 +63,7 @@ install-wrapper:
 # Copy scripts
 install-scripts:
 	@echo "Start stowing scripts"
+	@rm -rf ~/scripts
 	@cd $(DOTFILES_DIR) && stow -t ~ scripts
 	@echo "Stowed scripts"
 
@@ -69,6 +71,7 @@ install-scripts:
 # Install fish config
 install-fish:
 	@echo "Start stowing fish"
+	@rm -rf ~/.config/fish
 	@cd $(DOTFILES_DIR) && stow -t ~ fish
 	@echo "Fish config stowed"
 
@@ -76,6 +79,7 @@ install-fish:
 # Install foot config
 install-foot:
 	@echo "Start stowing foot"
+	@rm -rf ~/.config/foot
 	@cd $(DOTFILES_DIR) && stow -t ~ foot
 	@echo "foot config stowed"
 
@@ -83,6 +87,9 @@ install-foot:
 # Install bash config
 install-bash:
 	@echo "Start stowing bash"
+	@rm -rf ~/.bashrc
+	@rm -rf ~/.bash_profile
+	@sudo rm -rf /etc/profile.d/custom-bash-options.sh
 	@cd $(DOTFILES_DIR) && stow -t ~ bash
 	@cd $(DOTFILES_DIR) && sudo stow -t / sys-bash
 	@echo "bash config stowed"
@@ -91,6 +98,7 @@ install-bash:
 # Install nvim config
 install-nvim:
 	@echo "Start stowing nvim"
+	@rm -rf ~/.config/nvim
 	@cd $(DOTFILES_DIR) && stow -t ~ nvim
 	@echo "nvim config stowed"
 	@echo "sync Lazy"
@@ -101,6 +109,8 @@ install-nvim:
 # Install tmux config
 install-tmux:
 	@echo "Installing tmux config..."
+	@rm -rf ~/.tmux.conf
+	@rm -rf ~/.config/tmuxifier
 	@cd $(DOTFILES_DIR) && stow -t ~ tmux
 	@cd $(DOTFILES_DIR) && stow -t ~ tmuxifier
 
@@ -126,6 +136,7 @@ install-tmux:
 # Install qutebrowser config
 install-qutebrowser:
 	@echo "Start stowing qutebrowser"
+	@rm -rf ~/.config/qutebrowser
 	@cd $(DOTFILES_DIR) && stow -t ~ qutebrowser
 	@echo "qutebrowser config stowed"
 
@@ -133,8 +144,35 @@ install-qutebrowser:
 # Install starship config
 install-starship:
 	@echo "Start stowing starship"
+	@rm -rf ~/.config/starship.toml
 	@cd $(DOTFILES_DIR) && stow -t ~ starship
 	@echo "starship config stowed"
+
+# --------------------------
+# Install github cli config
+install-githubcli:
+	@echo "Start stowing github cli"
+	@rm -rf ~/.config/github-cli
+	@rm -rf ~/.config/github-cli-dash
+	@cd $(DOTFILES_DIR) && stow -t ~ github-cli
+	@cd $(DOTFILES_DIR) && stow -t ~ github-cli-dash
+	@echo "Github cli config stowed"
+
+# --------------------------
+# Install layzgit config
+install-lazygit:
+	@echo "Start stowing lazygit"
+	@rm -rf ~/.config/lazygit
+	@cd $(DOTFILES_DIR) && stow -t ~ lazygit
+	@echo "lazygit config stowed"
+
+# --------------------------
+# Install services config
+install-services:
+	@echo "Start stowing services"
+	@rm -rf ~/.config/systemd
+	@cd $(DOTFILES_DIR) && stow -t ~ services
+	@echo "services config stowed"
 
 # --------------------------
 # Install Doom Emacs
